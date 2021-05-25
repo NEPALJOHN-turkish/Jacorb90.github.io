@@ -23,6 +23,28 @@ body {
 	padding: 0;
 }
 
+.locked {
+	background-color: #820000;
+	color: white;
+	cursor: not-allowed;
+}
+
+.unlocked {
+	background-color: #607564;
+	color: white;
+	cursor: pointer;
+}
+
+.unlocked:hover {
+	background-color: #74b080;
+}
+
+.bought {
+	background-color: #13f23d;
+	color: black;
+	cursor: default;
+}
+
 table, tr, .table {
     display: flex;
     justify-content: center;
@@ -38,12 +60,11 @@ tr, .tableRow {
 
 button {
 	border: solid 3px white;
-	border-radius: 25%;
 	background-color: white;
     font-size: 14px;
 	cursor: default;
-	width: 100px;
-	height: 100px;
+	width: 150px;
+	height: 150px;
 }
 
 button.small {
@@ -100,9 +121,18 @@ button.bought {
 	font-size: 25px;
 }
 
-.btnlink:hover {
+.btnlink:not(.invLink):hover {
 	filter: sepia(150%);
 	filter: brightness(80%);
+	cursor: pointer;
+}
+
+.invLink {
+	filter: invert(100%);
+}
+
+.invLink:hover {
+	filter: invert(80%);
 	cursor: pointer;
 }
 
@@ -116,6 +146,19 @@ button.bought {
 }
 
 #titleBanner:hover {
+	cursor: default;
+}
+
+#tabBanner {
+	height: 50px;
+	background-color: black;
+	font-weight: bold;
+	user-select: none;
+	font-size: 20px;
+	border-bottom: 5px solid white;
+}
+
+#tabBanner:hover {
 	cursor: default;
 }
 

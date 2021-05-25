@@ -43,7 +43,7 @@ const GAME_DATA = {
 		url: "https://jacorb90.github.io/Prestige-Tree/",
 		player: localStorage.getItem("ptr")?JSON.parse(atob(localStorage.getItem("ptr"))):undefined,
 		lib: Decimal,
-		endgame: Decimal.pow(10, 1e15),
+		endgame: Decimal.pow(10, 3.14e16),
 		score() {
 			let data = this.player;
 			if (!data) return 0;
@@ -55,14 +55,14 @@ const GAME_DATA = {
 				if (d !== null) {
 					let tempS = 0;
 					tempS += (d.a?(d.a.achievements.length||0):0)*3
-					tempS += new Decimal(d.points).plus(1).log10().plus(1).log(this.endgame.log10()).min(1).times(100).toNumber();
+					tempS += new Decimal(d.points).plus(1).log10().plus(1).log(this.endgame.log10()).min(1).times(111).toNumber();
 					s = Math.max(s, tempS);
 				}
 			}
 			if (isNaN(s)) s = 0;
 			return Math.min(Math.floor(s), this.scoreLimit);
 		},
-		scoreLimit: 295,
+		scoreLimit: 350,
 	},
 	ngp3c: {
 		id: "ngp3c",
@@ -173,6 +173,9 @@ const SIDE_PROJECTS = Object.values(GAME_DATA).filter(x => x.type=="side");
 const COMPLETED_GAMES = Object.values(GAME_DATA).filter(x => x.type=="complete");
 
 var app;
+var tabData = {
+	tab: "main", // don't we love vue reactivity making things more complicated than they should be :)
+};
 
 function loadVue() {
 	app = new Vue({
@@ -183,6 +186,14 @@ function loadVue() {
 			SIDE_PROJECTS,
 			COMPLETED_GAMES,
 			OVERALL_DATA,
+			tabData,
+			player,
+			getUpgCost,
         }
 	})
+}
+
+function setupEverything() {
+	loadMinigameStuff();
+	loadVue();
 }

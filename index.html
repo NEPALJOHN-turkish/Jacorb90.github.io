@@ -7,53 +7,75 @@
 	<link rel="stylesheet" href="style.css">
 	<script type="text/javascript" src="js/break_eternity.js"></script>
 	<script type="text/javascript" src="js/OmegaNum.js"></script>
+	<script type="text/javascript" src="js/format.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
 	<script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src="js/minigame.js"></script>
 </head>
-<body onload="loadVue()">
+<body onload="setupEverything()">
 	<div id="app">
 		<div id="titleBanner"><div style="height: calc(50% - 45px);"></div><span class="jac">JACORB'S  GAMES</span>
 		<a class="btnlink" href="http://discord.gg/wwQfgPa" target="_blank" style="position: absolute; top: 5px; left: 5px; font-size: 15px; background-color: #36393e; color: white; text-shadow: 0px 0px 7px black; height: 50px;"><div style="margin-top: calc(50% - 20px)">DISCORD</div></a>
 		<a class="btnlink" href="http://patreon.com/Jacorb90" target="_blank" style="position: absolute; top: 65px; left: 5px; font-size: 15px; background-color: #eb6b34; height: 50px;"><div style="margin-top: calc(50% - 20px)">PATREON</div></a></div>
-		<div style="min-height: calc(100% - 130px);" class="jacBG">
+		<div id="tabBanner" v-if="player.started">
+			<button class="btnlink jacBG" style="height: 50px; width: 100px; font-size: 30px; color: white; padding-top: 5px; border-radius: 0px; border-top: none; border-bottom: none;" onclick="tabData.tab = 'main'"><b>MAIN</b></button>
+			<button class="btnlink jacBG invLink" style="height: 50px; width: 100px; font-size: 30px; color: white; padding-top: 5px; border-radius: 0px; border-top: none; border-bottom: none; border-color: black;" onclick="tabData.tab = 'minigame'"><b>GAME</b></button>
+		</div>
+		<div v-bind:style="{'min-height': 'calc(100% - 130px)', filter: ('invert('+(tabData.tab=='minigame'?'100':'0')+'%) brightness('+(tabData.tab=='minigame'?'75':'100')+'%)')}" class="jacBG">
 			<br>
 			<i>Note: Only sites starting with <b>jacorb90.github.io/...</b> give score (updates on reload)</i>
 			<br>
 			<h2>Total Game Score: {{OVERALL_DATA.totalScore}} / {{OVERALL_DATA.totalScoreLimit}}</h2><br>
-			<h1>Main Games</h1><br>
-			<table>
-				<tr>
-					<td v-for="data in MAIN_GAMES" style="width: 200px; height: 200px; margin: 0px 0px 20px 20px; background-color: black; border: 3px solid white;">
-						<span v-if="data.id!='ngp3c'"><br></span><h3>{{data.title}}</h3><br>
-						Game Score: {{data.score()}} / {{data.scoreLimit}}<br><br>
-						<a class="btnlink" v-bind:href="data.url" target="_blank"><div style="margin-top: calc(50% - 30px)">PLAY</div></a>
-						<br><br>
-					</td>
-				</tr>
-			</table><br>
-			<h1>Side Projects</h1><br>
-			<table>
-				<tr>
-					<td v-for="data in SIDE_PROJECTS" style="width: 200px; height: 200px; margin: 0px 0px 20px 20px; background-color: black; border: 3px solid white;">
-						<span><br></span><h3>{{data.title}}</h3><br>
-						Game Score: {{data.score()}} / {{data.scoreLimit}}<br><br>
-						<a class="btnlink" v-bind:href="data.url" target="_blank"><div style="margin-top: calc(50% - 30px)">PLAY</div></a>
-						<br><br>
-					</td>
-				</tr>
-			</table><br>
-			<h1>Completed Projects</h1><br>
-			<table>
-				<tr>
-					<td v-for="data in COMPLETED_GAMES" style="width: 200px; height: 200px; margin: 0px 0px 20px 20px; background-color: black; border: 3px solid white;">
-						<span><br></span><h3>{{data.title}}</h3><br>
-						Game Score: {{data.score()}} / {{data.scoreLimit}}<br><br>
-						<a class="btnlink" v-bind:href="data.url" target="_blank"><div style="margin-top: calc(50% - 30px)">PLAY</div></a>
-						<br><br>
-					</td>
-				</tr>
-			</table><br>
-			<br><br><br>
+			<div v-if="tabData.tab=='main'">
+				<h1>Main Games</h1><br>
+				<table>
+					<tr>
+						<td v-for="data in MAIN_GAMES" style="width: 200px; height: 200px; margin: 0px 0px 20px 20px; background-color: black; border: 3px solid white;">
+							<span v-if="data.id!='ngp3c'"><br></span><h3>{{data.title}}</h3><br>
+							Game Score: {{data.score()}} / {{data.scoreLimit}}<br><br>
+							<a class="btnlink" v-bind:href="data.url" target="_blank"><div style="margin-top: calc(50% - 30px)">PLAY</div></a>
+							<br><br>
+						</td>
+					</tr>
+				</table><br>
+				<h1>Side Projects</h1><br>
+				<table>
+					<tr>
+						<td v-for="data in SIDE_PROJECTS" style="width: 200px; height: 200px; margin: 0px 0px 20px 20px; background-color: black; border: 3px solid white;">
+							<span><br></span><h3>{{data.title}}</h3><br>
+							Game Score: {{data.score()}} / {{data.scoreLimit}}<br><br>
+							<a class="btnlink" v-bind:href="data.url" target="_blank"><div style="margin-top: calc(50% - 30px)">PLAY</div></a>
+							<br><br>
+						</td>
+					</tr>
+				</table><br>
+				<h1>Completed Projects</h1><br>
+				<table>
+					<tr>
+						<td v-for="data in COMPLETED_GAMES" style="width: 200px; height: 200px; margin: 0px 0px 20px 20px; background-color: black; border: 3px solid white;">
+							<span><br></span><h3>{{data.title}}</h3><br>
+							Game Score: {{data.score()}} / {{data.scoreLimit}}<br><br>
+							<a class="btnlink" v-bind:href="data.url" target="_blank"><div style="margin-top: calc(50% - 30px)">PLAY</div></a>
+							<br><br>
+						</td>
+					</tr>
+				</table><br>
+				<br><br><br>
+			</div>
+			<div v-if="tabData.tab=='minigame'">
+				Total Game Score raises all Meta gain multipliers ^<span class="jac" style="filter: invert(100%); font-weight: bold; font-size: 30px;">{{format(tmp.mainExp)}}</span><br><br>
+				You have <span class="jac" style="filter: invert(100%); font-weight: bold; font-size: 30px;">{{formatWhole(player.pts)}}</span> Meta.<br><br>
+				<table style="filter: invert(100%);">
+					<tr>
+						<td><button v-bind:class="{locked: player.pts.lt(getUpgCost(1)), unlocked: player.pts.gte(getUpgCost(1))}" onclick="buyUpg(1)">Generate Meta.<br>Currently: +{{formatWhole(player.upgs[1].pow(tmp.mainExp))}} Meta/second<sup>{{formatWhole(player.upgs[1])}}</sup><br><br>Cost: {{formatWhole(getUpgCost(1))}} Meta</button></td>
+						<td v-if="player.upgs[1].gte(1)"><button v-bind:class="{locked: player.pts.lt(getUpgCost(2)), unlocked: player.pts.gte(getUpgCost(2))}" onclick="buyUpg(2)">Double Meta gain.<br>Currently: {{formatWhole(Decimal.pow(2, player.upgs[2]).pow(tmp.mainExp))}}x Meta gain<br><br>Cost: {{formatWhole(getUpgCost(2))}} Meta</button></td>
+						<td v-if="player.upgs[2].gte(1)"><button v-bind:class="{locked: player.pts.lt(getUpgCost(3)), unlocked: player.pts.gte(getUpgCost(3))}" onclick="buyUpg(3)">Increase Total Game Score's effect by 25%<br>Currently: +{{formatWhole(Decimal.mul(player.upgs[3], 25))}}%<br><br>Cost: {{formatWhole(getUpgCost(3))}} Meta</button></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div id="tabBanner" style="border-top: 5px solid white; border-bottom: none;" v-if="!player.started">
+			<button class="btnlink jacBG invLink" style="height: 100%; width: 100px; font-size: 30px; color: white; padding-top: 5px; border-radius: 0px; border-top: none; border-bottom: none; border-color: black;" onclick="tabData.tab = 'minigame'; player.started = true;"><b>???</b></button>
 		</div>
 	</div>
 	<!-- 
