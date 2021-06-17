@@ -91,17 +91,18 @@ const GAME_DATA = {
 		url: "https://jacorb90.github.io/Incremenergy/",
 		player: localStorage.getItem("exponentGoUpYay")?JSON.parse(atob(localStorage.getItem("exponentGoUpYay"))):undefined,
 		lib: Decimal,
-		endgame: Decimal.pow(10, 2e13),
+		endgame: Decimal.pow(10, 3e19),
 		score() {
 			let data = this.player;
 			if (!data) return 0;
 			
 			let s = 0;
-			s += new Decimal(data.energy).plus(1).log10().plus(1).log(this.endgame.log10()).min(1).times(125).toNumber();
+			s += new Decimal(data.energy).plus(1).log10().plus(1).log(this.endgame.log10()).min(1).times(124).toNumber();
+			s += data.goals.length;
 			if (isNaN(s)) s = 0;
 			return Math.min(Math.floor(s), this.scoreLimit);
 		},
-		scoreLimit: 125,
+		scoreLimit: 180,
 	},
 	rap: {
 		id: "rap",
