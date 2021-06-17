@@ -98,7 +98,7 @@ const GAME_DATA = {
 			
 			let s = 0;
 			s += new Decimal(data.energy).plus(1).log10().plus(1).log(this.endgame.log10()).min(1).times(124).toNumber();
-			s += data.goals.length;
+			s += data.goals?data.goals.length:0;
 			if (isNaN(s)) s = 0;
 			return Math.min(Math.floor(s), this.scoreLimit);
 		},
