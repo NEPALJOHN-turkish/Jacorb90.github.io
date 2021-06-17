@@ -18,8 +18,8 @@ const GAME_DATA = {
 					if (um.includes(JSON.stringify(data[i].modes))) continue;
 					um.push(JSON.stringify(data[i].modes));
 					let modeAdd = 0;
-					modeAdd += (data[i].achievements.length||0)/16
-					modeAdd += new OmegaNum(data[i].distance).plus(1).log10().plus(1).log(this.endgame.log10()).min(1).times(10).toNumber();
+					modeAdd += (data[i].achievements?data[i].achievements.length:0)/16
+					modeAdd += new OmegaNum(data[i].distance||0).plus(1).log10().plus(1).log(this.endgame.log10()).min(1).times(10).toNumber();
 					
 					if (data[i].modes.length==0) modeAdd *= 5;
 					if (data[i].modes.length==1 && (data[i].modes[0]=="hikers_dream"||data[i].modes[0]=="hard")) modeAdd *= 2;
@@ -49,7 +49,7 @@ const GAME_DATA = {
 			if (!data) return 0;
 			
 			let s = 0;
-			let keys = Object.keys(this.player).filter(x => x!="set");
+			let keys = Object.keys(this.player||[]).filter(x => x!="set");
 			for (let i = 0; i < keys.length; i++) {
 				let d = data[keys[i]];
 				if (d !== null) {
@@ -77,7 +77,7 @@ const GAME_DATA = {
 			if (!data) return 0;
 			
 			let s = 0;
-			s += (data.achievements.length||0)/2
+			s += (data.achievements?data.achievements.length:0)/2
 			s += new Decimal(data.money).plus(1).log10().plus(1).log(this.endgame.log10()).min(1).times(100).toNumber();
 			if (isNaN(s)) s = 0;
 			return Math.min(Math.floor(s), this.scoreLimit);
