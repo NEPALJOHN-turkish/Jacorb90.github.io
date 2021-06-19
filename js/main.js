@@ -16,7 +16,7 @@ const GAME_DATA = {
 			for (let i = 0; i < data.length; i++)
 				if (data[i] !== null) {
 					let min = 0;
-					let lambda = (x => (x[0].every(y => data[i].modes.includes(y)) && data[i].modes.every(y => x[0].includes(y))));
+					let lambda = (x => (x[0] && x[0].every(y => data[i].modes.includes(y)) && data[i].modes.every(y => x[0].includes(y))));
 					if (um.some(lambda)) {
 						let i = um.findIndex(lambda);
 						min = um[i][1]
