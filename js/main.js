@@ -15,8 +15,14 @@ const GAME_DATA = {
 			let um = [];
 			for (let i = 0; i < data.length; i++)
 				if (data[i] !== null) {
-					if (um.includes(JSON.stringify(data[i].modes))) continue;
-					um.push(JSON.stringify(data[i].modes));
+					let min = 0;
+					let lambda = (x => (x[0].every(y => data[i].modes.includes(y)) && data[i].modes.every(y => x[0].includes(y))));
+					if (um.some(lambda)) {
+						let i = um.findIndex(lambda);
+						min = um[i][1]
+						s -= min;
+						um[i] = [undefined, 0];
+					}
 					let modeAdd = 0;
 					modeAdd += (data[i].achievements?data[i].achievements.length:0)/16
 					modeAdd += new OmegaNum(data[i].distance||0).plus(1).log10().plus(1).log(this.endgame.log10()).min(1).times(10).toNumber();
@@ -28,13 +34,15 @@ const GAME_DATA = {
 					
 					if (data[i].modes.includes("easy")) modeAdd /= 2;
 					if (data[i].modes.includes("aau")) modeAdd /= 4;
-					if (data[i].modes.includes("absurd")) modeAdd /= 3;
-					s += modeAdd;
+					if (data[i].modes.includes("absurd")) modeAdd /= 5;
+					s += Math.max(modeAdd, min);
+
+					um.push([data[i].modes, modeAdd]);
 				}
 			if (isNaN(s)) s = 0;
 			return Math.min(Math.floor(s), this.scoreLimit);
 		},
-		scoreLimit: 741,
+		scoreLimit: 713,
 	},
 	pt: {
 		id: "pt",
