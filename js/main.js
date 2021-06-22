@@ -79,7 +79,7 @@ const GAME_DATA = {
 		url: "https://jacorb90.github.io/NG-plus-3C/",
 		player: localStorage.getItem("AD_aarexModifications")?(localStorage.getItem(btoa("dsAM_"+JSON.parse(atob(localStorage.getItem("AD_aarexModifications"))).current))?JSON.parse(atob(localStorage.getItem(btoa("dsAM_"+JSON.parse(atob(localStorage.getItem("AD_aarexModifications"))).current)))):undefined):undefined,
 		lib: Decimal,
-		endgame: Decimal.pow(10, 3.5e15),
+		endgame: Decimal.pow(10, 1.6e15),
 		score() {
 			let data = this.player;
 			if (!data) return 0;
@@ -90,7 +90,7 @@ const GAME_DATA = {
 			if (isNaN(s)) s = 0;
 			return Math.min(Math.floor(s), this.scoreLimit);
 		},
-		scoreLimit: 192,
+		scoreLimit: 196,
 	},
 	en: {
 		id: "en",
