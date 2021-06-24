@@ -65,21 +65,32 @@
 			<div v-if="tabData.tab=='minigame'">
 				Total Game Score raises all Meta gain multipliers ^<span class="jac" style="filter: invert(100%); font-weight: bold; font-size: 30px;">{{format(tmp.mainExp)}}</span><br><br>
 				You have <span class="jac" style="filter: invert(100%); font-weight: bold; font-size: 30px;">{{formatWhole(player.pts)}}</span> Meta.<br><br>
-				<button v-if="player.prestige.gte(10)" style="filter: invert(100%);" class="unlocked small" onclick="maxAll()">Max All</button>
+				<table>
+					<tr>
+						<td><button v-if="player.prestige.gte(10)||player.prestigeUpgs[1].gte(1)" style="filter: invert(100%);" class="unlocked small" onclick="maxAll()">Max All</button></td>
+						<td><button v-if="player.prestige.gte(1e6)||player.prestigeUpgs[1].gte(12)" style="filter: invert(100%);" class="unlocked small" onclick="player.autoUpgs = !player.autoUpgs;">Auto: {{player.autoUpgs?"ON":"OFF"}}</button></td>
+					</tr>
+				</table>
 				<table style="filter: invert(100%);">
 					<tr>
-						<td><button v-bind:class="{locked: player.pts.lt(getUpgCost(1)), unlocked: player.pts.gte(getUpgCost(1))}" onclick="buyUpg(1)">Generate Meta.<br>Currently: +{{formatWhole(player.upgs[1].pow(tmp.mainExp).times(Decimal.pow(OVERALL_DATA.totalScore, player.upgs[4])))}} Meta/second<sup>{{formatWhole(player.upgs[1])}}</sup><br><br>Cost: {{formatWhole(getUpgCost(1))}} Meta</button></td>
-						<td v-if="player.upgs[1].gte(1)"><button v-bind:class="{locked: player.pts.lt(getUpgCost(2)), unlocked: player.pts.gte(getUpgCost(2))}" onclick="buyUpg(2)">Double Meta gain.<br>Currently: {{formatWhole(Decimal.pow(2, player.upgs[2]).pow(tmp.mainExp))}}x Meta gain<br><br>Cost: {{formatWhole(getUpgCost(2))}} Meta</button></td>
-						<td v-if="player.upgs[2].gte(1)"><button v-bind:class="{locked: player.pts.lt(getUpgCost(3)), unlocked: player.pts.gte(getUpgCost(3))}" onclick="buyUpg(3)">Increase Total Game Score's effect by 25%<br>Currently: +{{formatWhole(Decimal.mul(player.upgs[3], 25))}}%<br><br>Cost: {{formatWhole(getUpgCost(3))}} Meta</button></td>
+						<td><button v-bind:class="{locked: player.pts.lt(getUpgCost(1)), unlocked: player.pts.gte(getUpgCost(1))}" onclick="buyUpg(1)">Generate Meta.<br>Currently: +{{formatWhole(player.upgs[1].times(tmp.upgPower).pow(tmp.mainExp).times(Decimal.pow(OVERALL_DATA.totalScore, player.upgs[4].times(tmp.upgPower))))}} Meta/second<sup>{{formatWhole(player.upgs[1])}}</sup><br><br>Cost: {{formatWhole(getUpgCost(1))}} Meta</button></td>
+						<td v-if="player.upgs[1].gte(1)"><button v-bind:class="{locked: player.pts.lt(getUpgCost(2)), unlocked: player.pts.gte(getUpgCost(2))}" onclick="buyUpg(2)">Double Meta gain.<br>Currently: {{formatWhole(Decimal.pow(2, player.upgs[2].times(tmp.upgPower)).pow(tmp.mainExp))}}x Meta gain<br><br>Cost: {{formatWhole(getUpgCost(2))}} Meta</button></td>
+						<td v-if="player.upgs[2].gte(1)"><button v-bind:class="{locked: player.pts.lt(getUpgCost(3)), unlocked: player.pts.gte(getUpgCost(3))}" onclick="buyUpg(3)">Increase Total Game Score's effect by 25%<br>Currently: +{{formatWhole(Decimal.mul(player.upgs[3].times(tmp.upgPower), 25))}}%<br><br>Cost: {{formatWhole(getUpgCost(3))}} Meta</button></td>
 					</tr>
 					<tr>
-						<td v-if="player.upgs[3].gte(1)"><button v-bind:class="{locked: player.pts.lt(getUpgCost(4)), unlocked: player.pts.gte(getUpgCost(4))}" onclick="buyUpg(4)">Multiply the first upgrade's effect by your Total Game Score<br>Currently: {{format(Decimal.pow(OVERALL_DATA.totalScore, player.upgs[4]))}}x<br><br>Cost: {{formatWhole(getUpgCost(4))}} Meta</button></td>
+						<td v-if="player.upgs[3].gte(1)"><button v-bind:class="{locked: player.pts.lt(getUpgCost(4)), unlocked: player.pts.gte(getUpgCost(4))}" onclick="buyUpg(4)">Multiply the first upgrade's effect by your Total Game Score<br>Currently: {{format(Decimal.pow(OVERALL_DATA.totalScore, player.upgs[4].times(tmp.upgPower)))}}x<br><br>Cost: {{formatWhole(getUpgCost(4))}} Meta</button></td>
 					</tr>
 				</table><br><br>
 				<div v-if="player.upgs[4].gte(1) || player.prestige.gte(1)">
 					<button style="filter: invert(100%);" v-bind:class="{locked: player.pts.lt('1e12375'), unlocked: player.pts.gte('1e12375')}" onclick="doPrestige()">Reset Meta & all upgrades for {{formatWhole(tmp.prestigeGain)}} prestige<br><br>Next at {{formatWhole(tmp.nextPrestige)}} Meta</button><br><br>
-					You have {{formatWhole(player.prestige)}} prestige, which reduces upgrade costs by {{format(tmp.prestigeEff)}} levels.
-				</div>
+					You have {{formatWhole(player.prestige)}} prestige, which reduces normal upgrade costs by {{format(tmp.prestigeEff)}} levels.<br><br>
+					<table style="filter: invert(100%);">
+						<tr>
+							<td v-if="player.prestige.gte(1)"><button v-bind:class="{locked: player.prestige.lt(getPrestigeUpgCost(1)), unlocked: player.prestige.gte(getPrestigeUpgCost(1))}" onclick="buyPrestigeUpg(1)">Normal Upgrades are 25% stronger & double Prestige gain.<br>Currently: {{formatWhole(player.prestigeUpgs[1].times(25))}}% stronger, {{formatWhole(Decimal.pow(2, player.prestigeUpgs[1]))}}x Prestige gain<br><br>Cost: {{formatWhole(getPrestigeUpgCost(1))}} Prestige</button></td>
+							<td v-if="player.prestigeUpgs[1].gte(1)"><button v-bind:class="{locked: player.prestige.lt(getPrestigeUpgCost(2)), unlocked: player.prestige.gte(getPrestigeUpgCost(2))}" onclick="buyPrestigeUpg(2)">Meta boosts the Total Game Score effect, the Prestige effect, & Prestige gain.<br>Currently: {{format(player.pts.plus(1).log10().plus(1).log2().times(player.prestigeUpgs[2]))}}% stronger<br>Cost: {{formatWhole(getPrestigeUpgCost(2))}} Prestige</button></td>
+						</tr>
+					</table>
+				</div><br><br><br>
 			</div>
 		</div>
 		<div id="tabBanner" style="border-top: 5px solid white; border-bottom: none;" v-if="!player.started">
