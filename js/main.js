@@ -138,18 +138,18 @@ const GAME_DATA = {
 		url: "https://jacorb90.me/The-Formula/",
 		player: localStorage.getItem("formula_tree_game")?JSON.parse(atob(localStorage.getItem("formula_tree_game"))):undefined,
 		lib: Decimal,
-		endgame: new Decimal(1e40),
+		endgame: new Decimal("1e1250"),
 		score() {
 			let data = this.player;
 			if (!data) return 0;
 
 			let s = 0;
 			s += new Decimal(data.value||0).plus(1).log(this.endgame).min(1).times(25).toNumber()
-			s += data.goals?data.goals.achievements.length:0
+			s += data.goals?(data.goals.achievements.length*0.75):0
 			if (isNaN(s)) s = 0;
 			return Math.min(Math.floor(s), this.scoreLimit);
 		},
-		scoreLimit: 44,
+		scoreLimit: 52,
 	},
 	ptc: {
 		id: "ptc",
