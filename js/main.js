@@ -158,17 +158,17 @@ const GAME_DATA = {
 		url: "https://jacorb90.me/UE-Rewritten/",
 		player: localStorage.getItem("UErewritten")?JSON.parse(atob(localStorage.getItem("UErewritten"))):undefined,
 		lib: Decimal,
-		endgame: new Decimal(43),
+		endgame: new Decimal(145),
 		score() {
 			let data = this.player;
 			if (!data) return 0;
 
 			let s = 0;
-			s += new Decimal(data.depth||0).div(this.endgame).min(1).times(40).toNumber()
+			s += new Decimal(data.depth||0).div(this.endgame).sqrt().min(1).times(54).toNumber()
 			if (isNaN(s)) s = 0;
 			return Math.min(Math.floor(s), this.scoreLimit);
 		},
-		scoreLimit: 45,
+		scoreLimit: 54,
 	},
 	ptc: {
 		id: "ptc",
