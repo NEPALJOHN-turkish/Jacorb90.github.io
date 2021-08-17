@@ -170,6 +170,25 @@ const GAME_DATA = {
 		},
 		scoreLimit: 57,
 	},
+	auto: {
+		id: "auto",
+		title: "The Factory of Automation",
+		type: "side",
+		url: "https://jacorb90.me/The-Factory-Of-Automation/",
+		player: localStorage.getItem("theAutoClickGame")?JSON.parse(atob(localStorage.getItem("theAutoClickGame"))):undefined,
+		lib: Decimal,
+		endgame: new Decimal("e1.125e11"),
+		score() {
+			let data = this.player;
+			if (!data) return 0;
+
+			let s = 0;
+			s += new Decimal((data.materials[0]?data.materials[0].amt:0)||0).max(1).log(this.endgame).sqrt().min(1).times(54).toNumber()
+			if (isNaN(s)) s = 0;
+			return Math.min(Math.floor(s), this.scoreLimit);
+		},
+		scoreLimit: 54,
+	},
 	ptc: {
 		id: "ptc",
 		title: "Prestige Tree: Classic",
