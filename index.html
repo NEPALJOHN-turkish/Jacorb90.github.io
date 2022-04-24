@@ -63,6 +63,12 @@
 				<br><br><br>
 			</div>
 			<div v-if="tabData.tab=='minigame'">
+				<table>
+					<tr>
+						<td><button style="filter: invert(100%)" class="unlocked small" onclick="importSave()">Import</button></td>
+						<td><button style="filter: invert(100%)" class="unlocked small" onclick="exportSave()">Export</button></td>
+					</tr>
+				</table>
 				Total Game Score raises all Meta gain multipliers ^<span class="jac" style="filter: invert(100%); font-weight: bold; font-size: 30px;">{{format(tmp.mainExp)}}</span><br><br>
 				You have <span class="jac" style="filter: invert(100%); font-weight: bold; font-size: 30px;">{{formatWhole(player.pts)}}</span> Meta.<br><br>
 				<table>

@@ -16,8 +16,13 @@ function loadMinigameStuff() {
 	let start = getStartPlayer();
 	
 	let data = localStorage.getItem(lsTitle);
-	if (data) player = JSON.parse(atob(data));
-	else player = start;
+	if (data) {
+		try {
+			player = JSON.parse(atob(data));
+		} catch(e) {
+			player = start;
+		}
+	} else player = start;
 	
 	fixPlayerObj(player, start);
 	
@@ -110,4 +115,16 @@ function buyPrestigeUpg(x) {
 	if (player.prestige.lt(cost)) return;
 	player.prestige = player.prestige.sub(cost)
 	player.prestigeUpgs[x] = player.prestigeUpgs[x].plus(1);
+}
+
+function importSave() {
+	const save = prompt("Input your save here: ");
+
+	localStorage.setItem(lsTitle, save);
+	loadMinigameStuff();
+	location.reload();
+}
+
+function exportSave() {
+	prompt("Here's your save: ", btoa(JSON.stringify(player)));
 }
