@@ -5,109 +5,176 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="icon" href="favicon.ico?" type="image/x-icon">
 	<link rel="stylesheet" href="style.css">
-	<script type="text/javascript" src="js/break_eternity.js"></script>
-	<script type="text/javascript" src="js/OmegaNum.js"></script>
-	<script type="text/javascript" src="js/format.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
-	<script type="text/javascript" src="js/main.js"></script>
-	<script type="text/javascript" src="js/minigame.js"></script>
+	<script src="./js/main.js" defer></script>
 </head>
-<body onload="setupEverything()">
-	<div id="app">
-		<div id="titleBanner"><div style="height: calc(50% - 45px);"></div><span class="jac">JACORB'S  GAMES</span>
-		<a class="btnlink" href="http://discord.gg/wwQfgPa" target="_blank" style="position: absolute; top: 5px; left: 5px; font-size: 15px; background-color: #36393e; color: white; text-shadow: 0px 0px 7px black; height: 50px;"><div style="margin-top: calc(50% - 20px)">DISCORD</div></a>
-		<a class="btnlink" href="http://patreon.com/Jacorb90" target="_blank" style="position: absolute; top: 65px; left: 5px; font-size: 15px; background-color: #eb6b34; height: 50px;"><div style="margin-top: calc(50% - 20px)">PATREON</div></a></div>
-		<div id="tabBanner" v-if="player.started">
-			<button class="btnlink jacBG" style="height: 50px; width: 100px; font-size: 30px; color: white; padding-top: 5px; border-radius: 0px; border-top: none; border-bottom: none;" onclick="tabData.tab = 'main'"><b>MAIN</b></button>
-			<button class="btnlink jacBG invLink" style="height: 50px; width: 100px; font-size: 30px; color: white; padding-top: 5px; border-radius: 0px; border-top: none; border-bottom: none; border-color: black;" onclick="tabData.tab = 'minigame'"><b>GAME</b></button>
-		</div>
-		<div v-bind:style="{'min-height': 'calc(100% - 130px)', filter: ('invert('+(tabData.tab=='minigame'?'100':'0')+'%) brightness('+(tabData.tab=='minigame'?'75':'100')+'%)')}" class="jacBG">
-			<br>
-			<i>Note: Only sites starting with <b>jacorb90.me/...</b> give score (updates on reload)</i>
-			<br>
-			<h2>Total Game Score: {{OVERALL_DATA.totalScore}} / {{OVERALL_DATA.totalScoreLimit}}</h2><br>
-			<div v-if="tabData.tab=='main'">
-				<h1>Main Games</h1><br>
-				<table>
-					<tr>
-						<td v-for="data in MAIN_GAMES" style="width: 200px; height: 200px; margin: 0px 0px 20px 20px; background-color: black; border: 3px solid white;">
-							<span v-if="data.id!='ngp3c'"><br></span><h3>{{data.title}}</h3><br>
-							Game Score: {{data.score()}} / {{data.scoreLimit}}<br><br>
-							<a class="btnlink" v-bind:href="data.url" target="_blank"><div style="margin-top: calc(50% - 30px)">PLAY</div></a>
-							<br><br>
-						</td>
-					</tr>
-				</table><br>
-				<h1>Side Projects</h1><br>
-				<table>
-					<tr>
-						<td v-for="data in SIDE_PROJECTS" style="width: 200px; height: 200px; margin: 0px 0px 20px 20px; background-color: black; border: 3px solid white;">
-							<span v-if="data.id!='uer'&&data.id!='auto'"><br></span><h3>{{data.title}}</h3><br>
-							Game Score: {{data.score()}} / {{data.scoreLimit}}<br><br>
-							<a class="btnlink" v-bind:href="data.url" target="_blank"><div style="margin-top: calc(50% - 30px)">PLAY</div></a>
-							<br><br>
-						</td>
-					</tr>
-				</table><br>
-				<h1>Completed Projects</h1><br>
-				<table>
-					<tr>
-						<td v-for="data in COMPLETED_GAMES" style="width: 200px; height: 200px; margin: 0px 0px 20px 20px; background-color: black; border: 3px solid white;">
-							<span><br></span><h3>{{data.title}}</h3><br>
-							Game Score: {{data.score()}} / {{data.scoreLimit}}<br><br>
-							<a class="btnlink" v-bind:href="data.url" target="_blank"><div style="margin-top: calc(50% - 30px)">PLAY</div></a>
-							<br><br>
-						</td>
-					</tr>
-				</table><br>
-				<br><br><br>
+<body>
+	<div class="header">
+		<a class="link patreon-img" target="_blank" href="https://www.patreon.com/Jacorb90"></a>
+		<a class="link discord-img" target="_blank" href="https://discord.gg/wwQfgPa"></a>
+		<a class="link github-img" target="_blank" href="https://github.com/jacorb90"></a>
+		<h1>Jacorb's Games</h1>
+	</div>
+	<div class="taskbar row">
+		<button onclick="setTab(0)">Main Projects</button>
+		<button onclick="setTab(1)">Side Projects</button>
+		<button onclick="setTab(3)">Prototypes [OLD]</button>
+
+		<!-- Yes the tab numbers are out of order, and yes it was specificially to bother anyone who happens to look at this, copium -->
+		<button onclick="setTab(2)">...</button>
+	</div>
+
+	<div class="body">
+		<div id="main-projects" class="col">
+			<div class="row">
+				<div class="project col">
+					<div class="jorb-diamond"></div>
+					<h3>Distance Incremental</h3>
+					<div>
+						<a href="https://Jacorb90.github.io/DistInc.github.io/main.html" target="_blank" class="link">OPEN</a>
+					</div>
+				</div>
+				<div class="project col">
+					<div class="jorb-diamond"></div>
+					<h3>Prestige Tree</h3>
+					<div>
+						<a href="https://jacorb90.github.io/Prestige-Tree/" target="_blank" class="link">OPEN</a>
+					</div>
+				</div>
 			</div>
-			<div v-if="tabData.tab=='minigame'">
-				<b>PLEASE port your saves over to <a href="https://jacorb90.me/Old-Site">https://jacorb90.me/Old-Site</a></b> if you wish to keep your metagame save!<br>
-				This url will be changed entirely very soon, so if you care about your save please port it there<br>
-				<table>
-					<tr>
-						<td><button style="filter: invert(100%)" class="unlocked small" onclick="importSave()">Import</button></td>
-						<td><button style="filter: invert(100%)" class="unlocked small" onclick="exportSave()">Export</button></td>
-					</tr>
-				</table>
-				Total Game Score raises all Meta gain multipliers ^<span class="jac" style="filter: invert(100%); font-weight: bold; font-size: 30px;">{{format(tmp.mainExp)}}</span><br><br>
-				You have <span class="jac" style="filter: invert(100%); font-weight: bold; font-size: 30px;">{{formatWhole(player.pts)}}</span> Meta.<br><br>
-				<table>
-					<tr>
-						<td><button v-if="player.prestige.gte(10)||player.prestigeUpgs[1].gte(1)" style="filter: invert(100%);" class="unlocked small" onclick="maxAll()">Max All</button></td>
-						<td><button v-if="player.prestige.gte(1e6)||player.prestigeUpgs[1].gte(12)" style="filter: invert(100%);" class="unlocked small" onclick="player.autoUpgs = !player.autoUpgs;">Auto: {{player.autoUpgs?"ON":"OFF"}}</button></td>
-					</tr>
-				</table>
-				<table style="filter: invert(100%);">
-					<tr>
-						<td><button v-bind:class="{locked: player.pts.lt(getUpgCost(1)), unlocked: player.pts.gte(getUpgCost(1))}" onclick="buyUpg(1)">Generate Meta.<br>Currently: +{{formatWhole(player.upgs[1].times(tmp.upgPower).pow(tmp.mainExp).times(Decimal.pow(OVERALL_DATA.totalScore, player.upgs[4].times(tmp.upgPower))))}} Meta/second<sup>{{formatWhole(player.upgs[1])}}</sup><br><br>Cost: {{formatWhole(getUpgCost(1))}} Meta</button></td>
-						<td v-if="player.upgs[1].gte(1)"><button v-bind:class="{locked: player.pts.lt(getUpgCost(2)), unlocked: player.pts.gte(getUpgCost(2))}" onclick="buyUpg(2)">Double Meta gain.<br>Currently: {{formatWhole(Decimal.pow(2, player.upgs[2].times(tmp.upgPower)).pow(tmp.mainExp))}}x Meta gain<br><br>Cost: {{formatWhole(getUpgCost(2))}} Meta</button></td>
-						<td v-if="player.upgs[2].gte(1)"><button v-bind:class="{locked: player.pts.lt(getUpgCost(3)), unlocked: player.pts.gte(getUpgCost(3))}" onclick="buyUpg(3)">Increase Total Game Score's effect by 25%<br>Currently: +{{formatWhole(Decimal.mul(player.upgs[3].times(tmp.upgPower), 25))}}%<br><br>Cost: {{formatWhole(getUpgCost(3))}} Meta</button></td>
-					</tr>
-					<tr>
-						<td v-if="player.upgs[3].gte(1)"><button v-bind:class="{locked: player.pts.lt(getUpgCost(4)), unlocked: player.pts.gte(getUpgCost(4))}" onclick="buyUpg(4)">Multiply the first upgrade's effect by your Total Game Score<br>Currently: {{format(Decimal.pow(OVERALL_DATA.totalScore, player.upgs[4].times(tmp.upgPower)))}}x<br><br>Cost: {{formatWhole(getUpgCost(4))}} Meta</button></td>
-					</tr>
-				</table><br><br>
-				<div v-if="player.upgs[4].gte(1) || player.prestige.gte(1)">
-					<button style="filter: invert(100%);" v-bind:class="{locked: player.pts.lt('1e12375'), unlocked: player.pts.gte('1e12375')}" onclick="doPrestige()">Reset Meta & all upgrades for {{formatWhole(tmp.prestigeGain)}} prestige<br><br>Next at {{formatWhole(tmp.nextPrestige)}} Meta</button><br><br>
-					You have {{formatWhole(player.prestige)}} prestige, which reduces normal upgrade costs by {{format(tmp.prestigeEff)}} levels.<br><br>
-					<table style="filter: invert(100%);">
-						<tr>
-							<td v-if="player.prestige.gte(1)"><button v-bind:class="{locked: player.prestige.lt(getPrestigeUpgCost(1)), unlocked: player.prestige.gte(getPrestigeUpgCost(1))}" onclick="buyPrestigeUpg(1)">Normal Upgrades are 25% stronger & double Prestige gain.<br>Currently: {{formatWhole(player.prestigeUpgs[1].times(25))}}% stronger, {{formatWhole(Decimal.pow(2, player.prestigeUpgs[1]))}}x Prestige gain<br><br>Cost: {{formatWhole(getPrestigeUpgCost(1))}} Prestige</button></td>
-							<td v-if="player.prestigeUpgs[1].gte(1)"><button v-bind:class="{locked: player.prestige.lt(getPrestigeUpgCost(2)), unlocked: player.prestige.gte(getPrestigeUpgCost(2))}" onclick="buyPrestigeUpg(2)">Meta boosts the Total Game Score effect, the Prestige effect, & Prestige gain.<br>Currently: {{format(player.pts.plus(1).log10().plus(1).log2().times(player.prestigeUpgs[2]))}}% stronger<br>Cost: {{formatWhole(getPrestigeUpgCost(2))}} Prestige</button></td>
-						</tr>
-					</table>
-				</div><br><br><br>
+			<div class="row">
+				<div class="project col">
+					<div class="jorb-diamond"></div>
+					<h3>Incremenergy</h3>
+					<div>
+						<a href="https://jacorb90.github.io/Incremenergy/" target="_blank" class="link">OPEN</a>
+					</div>
+				</div>
+				<div class="project col">
+					<div class="jorb-diamond"></div>
+					<h3>The Factory of Automation</h3>
+					<div>
+						<a href="https://jacorb90.me/The-Factory-Of-Automation/" target="_blank" class="link">OPEN</a>
+					</div>
+				</div>
+				<div class="project col">
+					<div class="jorb-diamond"></div>
+					<h3>Primordia</h3>
+					<div>
+						<a href="https://jacorb90.me/Primordial-Tree/" target="_blank" class="link">OPEN</a>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="project col">
+					<div class="jorb-diamond"></div>
+					<h3>Prestige Tree: Classic</h3>
+					<div>
+						<a href="https://jacorb90.github.io/Prestige-Tree-Classic/" target="_blank" class="link">OPEN</a>
+					</div>
+				</div>
+				<div class="project col">
+					<div class="jorb-diamond"></div>
+					<h3>Escape from Vantablack</h3>
+					<div>
+						<a href="https://jacorb90.github.io/Escape-from-Vantablack/" target="_blank" class="link">OPEN</a>
+					</div>
+				</div>
+				<div class="project col">
+					<div class="jorb-diamond"></div>
+					<h3>Antimatter Dimensions NG+++ Condensed</h3>
+					<div>
+						<a href="https://jacorb90.github.io/NG-plus-3C/" target="_blank" class="link">OPEN</a>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div id="tabBanner" style="border-top: 5px solid white; border-bottom: none;" v-if="!player.started">
-			<button class="btnlink jacBG invLink" style="height: 100%; width: 100px; font-size: 30px; color: white; padding-top: 5px; border-radius: 0px; border-top: none; border-bottom: none; border-color: black;" onclick="tabData.tab = 'minigame'; player.started = true;"><b>???</b></button>
+		<div id="side-projects" class="col">
+			<div class="row">
+				<div class="project col">
+					<div class="alter-diamond"></div>
+					<h3>Distance Incremental: Rewritten</h3>
+					<div>
+						<a href="https://jacorb90.me/Distance-Incremental-Rewritten/" target="_blank" class="link">OPEN</a>
+					</div>
+				</div>
+				<div class="project col">
+					<div class="alter-diamond"></div>
+					<h3>Universe Expander: Rewritten</h3>
+					<div>
+						<a href="https://jacorb90.me/UE-Rewritten/" target="_blank" class="link">OPEN</a>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="project col">
+					<div class="alter-diamond"></div>
+					<h3>The Formula</h3>
+					<div>
+						<a href="https://jacorb90.me/The-Formula/" target="_blank" class="link">OPEN</a>
+					</div>
+				</div>
+				<div class="project col">
+					<div class="alter-diamond"></div>
+					<h3>Rapture 30</h3>
+					<div>
+						<a href="https://jacorb90.github.io/Rapture-30/" target="_blank" class="link">OPEN</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="crying-projects" class="row">
+			<div class="project col">
+				<div class="sadge-diamond"></div>
+				<h3>RNG Tree</h3>
+				<div>
+					<a href="https://jacorb90.me/RNG-Tree/" target="_blank" class="link">OPEN</a>
+				</div>
+			</div>
+			<div class="project col">
+				<div class="sadge-diamond"></div>
+				<h3>Trolling 3</h3>
+				<div>
+					<a href="https://jacorb90.me/Trolling-3/" target="_blank" class="link">OPEN</a>
+				</div>
+			</div>
+			<div class="project col">
+				<div class="sadge-diamond"></div>
+				<h3>Trolling</h3>
+				<div>
+					<a href="https://jacorb90.me/trolling/" target="_blank" class="link">OPEN</a>
+				</div>
+			</div>
+		</div>
+		<div id="prototypes" class="row">
+			<div class="project col">
+				<div class="rusty-diamond"></div>
+				<h3>Chess Variants</h3>
+				<div>
+					<a href="https://jacorb90.me/pf/Chess/" target="_blank" class="link">OPEN</a>
+				</div>
+			</div>
+			<div class="project col">
+				<div class="rusty-diamond"></div>
+				<h3>Tower of Insanity</h3>
+				<div>
+					<a href="https://jacorb90.me/Tower-of-Insanity/" target="_blank" class="link">OPEN</a>
+				</div>
+			</div>
+			<div class="project col">
+				<div class="rusty-diamond"></div>
+				<h3>Immortale Warfare</h3>
+				<div>
+					<a href="https://jacorb90.me/Immortale-Warfare/" target="_blank" class="link">OPEN</a>
+				</div>
+			</div>
+			<div class="project col">
+				<div class="rusty-diamond"></div>
+				<h3>"RPG Test Thingy"</h3>
+				<div>
+					<a href="https://jacorb90.me/UGFydGljbGUgVG93ZXIgb2YgTWFkbmVzcyBoMTM/" target="_blank" class="link">OPEN</a>
+				</div>
+			</div>
+			<!-- TODO: Polish 2 remaining projects to add here -->
 		</div>
 	</div>
-	<!-- 
-		01101010 01100001 01100011 01101111 01110010 01100010 00111001 00110000 00101110 
-		01100111 01101001 01110100 01101000 01110101 01100010 00101110 01101001 01101111 
-		00101111 01100100 01100001 01110100 01100001 00101110 01111010 01101001 01110000
-	-->
 </body>
