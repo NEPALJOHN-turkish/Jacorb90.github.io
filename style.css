@@ -10,7 +10,7 @@
 	transition-duration: 0.5s;
 }
 
-html, body {
+html {
 	height: 100%;
 	width: 100%;
 }
@@ -41,12 +41,8 @@ a:hover {
 }
 
 body {
-	margin: 0 auto;
-	display: flex;
-	place-items: start;
-	flex: 1;
 	min-width: 320px;
-	min-height: 100vh;
+	min-height: calc(100% - 15em);
 }
 
 h1 {
@@ -76,19 +72,6 @@ button:focus-visible {
 
 .card {
 	padding: 2em;
-}
-
-@media (prefers-color-scheme: light) {
-	:root {
-		color: #213547;
-		background-color: #ffffff;
-	}
-	a:hover {
-		color: #747bff;
-	}
-	button {
-		background-color: #f9f9f9;
-	}
 }
 
 .header {
@@ -179,9 +162,9 @@ button:focus-visible {
 }
 
 a.link {
-	background-color: #1a1a1a;
+	background-color: #272627;
 	border-radius: 8px;
-	border: 1px solid transparent;
+	border: 1px solid rgba(255, 255, 255, 0.1);
 	cursor: pointer;
 	transition: border-color 0.25s;
 	box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
@@ -205,11 +188,12 @@ a.link:not(.patreon-img):not(.discord-img):not(.github-img) {
 }
 
 div.project {
+	border: 1px solid rgba(255,255,255,0.2);
 	width: 16em;
 	height: 16em;
 	padding: 0.5em;
 	z-index: 0;
-	background-color: #0f1418;
+	background-color: rgba(33, 42, 47, 0.5);
 	border-radius: 2%;
 	box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
